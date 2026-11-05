@@ -1,0 +1,334 @@
+{
+  "info": {
+    "name": "Quiz Platform API",
+    "description": "API collection for the Quiz Platform backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set(\"token\", jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quizzes",
+      "item": [
+        {
+          "name": "Get Quizzes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes"]
+            }
+          }
+        },
+        {
+          "name": "Get Quiz by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", ":id"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_QUIZ_ID" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Quiz (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"JavaScript Basics\",\n  \"description\": \"Test your JS knowledge\",\n  \"duration\": 15,\n  \"totalMarks\": 10,\n  \"isPublished\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes"]
+            }
+          }
+        },
+        {
+          "name": "Update Quiz (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"JavaScript Basics - Updated\",\n  \"duration\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", ":id"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_QUIZ_ID" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Quiz (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", ":id"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_QUIZ_ID" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "Get Questions by Quiz",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/:quizId/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", ":quizId", "questions"],
+              "variable": [
+                { "key": "quizId", "value": "REPLACE_WITH_QUIZ_ID" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Question (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"What is closure in JavaScript?\",\n  \"options\": [\n    { \"id\": \"A\", \"text\": \"A function\" },\n    { \"id\": \"B\", \"text\": \"A variable\" }\n  ],\n  \"correctAnswer\": \"A\",\n  \"marks\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/:quizId/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", ":quizId", "questions"],
+              "variable": [
+                { "key": "quizId", "value": "REPLACE_WITH_QUIZ_ID" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Question (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marks\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/questions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions", ":id"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_QUESTION_ID" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Question (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/questions/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions", ":id"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_QUESTION_ID" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quiz Attempts",
+      "item": [
+        {
+          "name": "Start Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/:id/start",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", ":id", "start"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_QUIZ_ID" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attemptId\": \"REPLACE_WITH_ATTEMPT_ID\",\n  \"answers\": [\n    {\n      \"questionId\": \"REPLACE_WITH_QUESTION_ID\",\n      \"selectedAnswer\": \"A\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quizzes/:id/submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["quizzes", ":id", "submit"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_QUIZ_ID" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Results",
+      "item": [
+        {
+          "name": "Get User Results",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/:id/results",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", ":id", "results"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_USER_ID" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Result by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/results/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["results", ":id"],
+              "variable": [
+                { "key": "id", "value": "REPLACE_WITH_RESULT_ID" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

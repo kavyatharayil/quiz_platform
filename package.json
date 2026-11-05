@@ -1,0 +1,23 @@
+{
+  "name": "quiz-platform",
+  "version": "1.0.0",
+  "description": "Monolithic Quiz Platform",
+  "private": true,
+  "scripts": {
+    "start": "npm run start --prefix server",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev:server\" \"npm run dev:client\"",
+    "install:all": "npm install --prefix server && npm install --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "axios": "^1.19.0",
+    "react-router-dom": "^7.18.2",
+    "redix": "^1.0.2",
+    "tailwindcss": "^4.3.3"
+  }
+}

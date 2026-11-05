@@ -1,0 +1,8 @@
+const RESULT_STATUS = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+};
+
+module.exports = {
+  RESULT_STATUS,
+};
